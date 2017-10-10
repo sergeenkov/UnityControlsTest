@@ -28,11 +28,22 @@ public class GoogleMap : MonoBehaviour
         if (renderer != null)
             _texture = renderer.material.mainTexture;
 
-        RawImage image = GetComponent<RawImage>();
+        RawImage rawImage = GetComponent<RawImage>();
+	    if (rawImage != null)
+	    {
+            size = (int)Mathf.Max(rawImage.rectTransform.rect.width, rawImage.rectTransform.rect.height);
+	        _texture = rawImage.texture;
+	    }
+
+	    Image image = GetComponent<Image>();
 	    if (image != null)
 	    {
-            _texture = image.texture;
-	        size = (int)Mathf.Max(image.rectTransform.rect.width, image.rectTransform.rect.height);
+            size = (int)Mathf.Max(image.rectTransform.rect.width, image.rectTransform.rect.height);
+
+            if (image.mainTexture == null)
+                image.sprite = Sprite.Create(new Texture2D(size, size), new Rect(0, 0, size, size), Vector2.one/2 );  
+
+            _texture = image.mainTexture;            
 	    }
             
         /*
